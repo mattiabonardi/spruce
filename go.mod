@@ -1,6 +1,6 @@
-module server
+module github.com/mattiabonardi/trucknovate
 
-go 1.16
+go 1.19
 
 require (
 	github.com/gin-contrib/cors v1.3.1

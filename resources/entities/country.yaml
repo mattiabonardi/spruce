@@ -1,0 +1,11 @@
+---
+name: Country
+description: Country
+attributes:
+  instances: 
+    code:
+      type: String
+    name:
+      type: String
+  id: code
+  description: name
