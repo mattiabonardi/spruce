@@ -6,11 +6,8 @@ import (
 	"os"
 
 	"github.com/mattiabonardi/spruse/models"
-	"github.com/mattiabonardi/spruse/utils"
 	"gopkg.in/yaml.v2"
 )
-
-var yamlEntityDataPath string = utils.RootDir() + "resources/data/"
 
 type YamlEntityData struct {
 	Data []map[string]interface{} `yaml:"data"`
@@ -31,9 +28,8 @@ func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext 
 }
 
 func getYamlData(entityDefinition models.EntityDefinition) YamlEntityData {
-	// get file name
-	filePath := yamlEntityDataPath + entityDefinition.Class + ".yaml"
-	file, err := os.Open(filePath)
+	// open file
+	file, err := os.Open(entityDefinition.DataSource.YamlDAOConfig.FilePath)
 	if err != nil {
 		log.Fatalf("Unable to open file: %v", err)
 	}
@@ -66,7 +62,3 @@ func buildEntityFromYamlRecord(entityDefinition models.EntityDefinition, yamlRec
 	entity.Attributes = attributes
 	return entity
 }
-
-/*func (h YamlDAO) GetById(executionContext models.ExecutionContext, entityContext models.EntityContext, id string) models.Entity {
-
-}*/

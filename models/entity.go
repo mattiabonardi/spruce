@@ -6,23 +6,23 @@ type Entity struct {
 }
 
 type Attribute struct {
-	Type  PrimitiveType
+	Type  Type
 	Value any
 }
 
-type PrimitiveType string
+type Type string
 
 const (
-	Integer      PrimitiveType = "Integer"
-	String       PrimitiveType = "String"
-	Number       PrimitiveType = "Number"
-	Boolean      PrimitiveType = "Boolean"
-	ObjectId     PrimitiveType = "ObjectId"
-	Obect        PrimitiveType = "Object"
-	IntegerArray PrimitiveType = "IntegerArray"
-	StringArray  PrimitiveType = "StringArray"
-	NumberArray  PrimitiveType = "NumberArray"
-	ObjectArray  PrimitiveType = "ObjectArray"
+	Integer      Type = "Integer"
+	String       Type = "String"
+	Decimal      Type = "Decimal"
+	Boolean      Type = "Boolean"
+	ObjectId     Type = "ObjectId"
+	Object       Type = "Object"
+	IntegerArray Type = "IntegerArray"
+	StringArray  Type = "StringArray"
+	NumberArray  Type = "NumberArray"
+	ObjectArray  Type = "ObjectArray"
 )
 
 type EntityContext struct {
