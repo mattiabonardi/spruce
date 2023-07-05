@@ -1,19 +1,13 @@
 package models
 
 type Entity struct {
-	Name        string
-	Description string
-	Attributes  Attributes
-}
-
-type Attributes struct {
-	Instances   map[string]Attribute
-	Id          string
-	Description string
+	Class      string
+	Attributes map[string]Attribute
 }
 
 type Attribute struct {
-	Type PrimitiveType
+	Type  PrimitiveType
+	Value any
 }
 
 type PrimitiveType string

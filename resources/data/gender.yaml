@@ -1,8 +1,8 @@
 ---
 data:
   # Male
-  - id: 1
-    description: male
+  - _id: "1"
+    description: "male"
   # Female
-  - id: 2
-    description: female
+  - _id: "2"
+    description: "female"

@@ -1,15 +1,9 @@
 package models
 
 type EntityDefinition struct {
-	Name        string               `yaml:"name"`
-	Description string               `yaml:"description"`
-	Attributes  AttributesDefinition `yaml:"attributes"`
-}
-
-type AttributesDefinition struct {
-	Instances   map[string]AttributeDefinition `yaml:"instances"`
-	Id          string                         `yaml:"id"`
+	Class       string                         `yaml:"class"`
 	Description string                         `yaml:"description"`
+	Attributes  map[string]AttributeDefinition `yaml:"attributes"`
 }
 
 type AttributeDefinition struct {

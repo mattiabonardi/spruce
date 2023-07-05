@@ -1,11 +1,8 @@
 ---
-name: gender
-description: Gender
+class: gender
+description: gender
 attributes:
-  instances:
-    id:
-      type: Integer
-    description:
-      type: String
-  id: id
-  description: description
+  _id:
+    type: String
+  description:
+    type: String
