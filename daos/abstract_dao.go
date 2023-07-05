@@ -1,5 +1,8 @@
 package daos
 
+import "github.com/mattiabonardi/spruse/models"
+
 type AbstractDAO interface {
-	getById(id string) Entity
+	GetById(executionContext models.ExecutionContext, entityContext models.EntityContext, id string) models.Entity
+	GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) models.EntityIterator
 }

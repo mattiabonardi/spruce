@@ -1,0 +1,11 @@
+---
+name: gender
+description: Gender
+attributes:
+  instances:
+    id:
+      type: Integer
+    description:
+      type: String
+  id: id
+  description: description

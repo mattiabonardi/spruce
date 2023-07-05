@@ -1,19 +1,19 @@
 package models
 
 type Entity struct {
-	name        string
-	description string
-	attributes  Attributes
+	Name        string
+	Description string
+	Attributes  Attributes
 }
 
 type Attributes struct {
-	instances   map[string]Attribute
-	id          string
-	description string
+	Instances   map[string]Attribute
+	Id          string
+	Description string
 }
 
 type Attribute struct {
-	_type PrimitiveType
+	Type PrimitiveType
 }
 
 type PrimitiveType string
@@ -30,3 +30,7 @@ const (
 	NumberArray  PrimitiveType = "NumberArray"
 	ObjectArray  PrimitiveType = "ObjectArray"
 )
+
+type EntityContext struct {
+	Filters []EntityFilter
+}
