@@ -5,7 +5,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/mattiabonardi/spruse/models"
+	"github.com/mattiabonardi/spruce/models"
 	"gopkg.in/yaml.v2"
 )
 
