@@ -1,6 +1,10 @@
 ---
 class: gender
 description: gender
+dataSource:
+  type: YamlFile
+  yamlFileConfig:
+    filePath: /resources/entities/data/gender.yaml
 attributes:
   _id:
     type: String

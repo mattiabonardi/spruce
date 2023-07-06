@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/mattiabonardi/spruce/models"
+	"github.com/mattiabonardi/spruce/utils"
 	"gopkg.in/yaml.v2"
 )
 
@@ -29,7 +30,7 @@ func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext 
 
 func getYamlData(entityDefinition models.EntityDefinition) YamlEntityData {
 	// open file
-	file, err := os.Open(entityDefinition.DataSource.YamlDAOConfig.FilePath)
+	file, err := os.Open(utils.RootDir() + "/" + entityDefinition.DataSource.YamlFileConfig.FilePath)
 	if err != nil {
 		log.Fatalf("Unable to open file: %v", err)
 	}

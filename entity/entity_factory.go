@@ -11,7 +11,7 @@ type EntityFactory struct{}
 
 func (h EntityFactory) CreateDAO(entityDefinition models.EntityDefinition) daos.AbstractDAO {
 	switch entityDefinition.DataSource.Type {
-	case models.YamlDAO:
+	case models.YamlFile:
 		return daos.YamlDAO{
 			EntityDefinition: entityDefinition,
 		}

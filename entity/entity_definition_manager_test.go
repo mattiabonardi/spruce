@@ -1,18 +1,21 @@
 package entity
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/mattiabonardi/spruce/models"
 	"gopkg.in/yaml.v2"
 )
 
-func GetDefinitionTest(t *testing.T) {
-	entityDefinition := EntityDefinitionManager{}.GetDefinition("gender")
+func TestGetDefinition(t *testing.T) {
+	entityDefinitionManager := EntityDefinitionManager{}
+	entityDefinition := entityDefinitionManager.GetDefinition("gender")
 
-	t.Log(yaml.Marshal(entityDefinition))
+	yamlData, _ := yaml.Marshal(entityDefinition)
+	fmt.Println(string(yamlData))
 
-	if entityDefinition.DataSource.Type != "aaaa" {
-		t.Fatal("Aspected: " + models.YamlDAO + " got: " + entityDefinition.DataSource.Type)
+	if entityDefinition.DataSource.Type != models.YamlFile {
+		t.Fatal("Aspected: " + models.YamlFile + " got: " + entityDefinition.DataSource.Type)
 	}
 }

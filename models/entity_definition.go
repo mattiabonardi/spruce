@@ -14,12 +14,12 @@ type AttributeDefinition struct {
 type DataSourceType string
 
 const (
-	YamlDAO DataSourceType = "YamlDAO"
+	YamlFile DataSourceType = "YamlFile"
 )
 
 type DataSource struct {
-	Type          DataSourceType `yaml:"type"`
-	YamlDAOConfig YamlDAOConfig  `yaml:"yamlDAOConfig"`
+	Type           DataSourceType `yaml:"type"`
+	YamlFileConfig YamlDAOConfig  `yaml:"yamlFileConfig"`
 }
 
 type YamlDAOConfig struct {
