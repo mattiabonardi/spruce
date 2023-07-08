@@ -2,6 +2,7 @@ package daos
 
 import (
 	"bufio"
+	"errors"
 	"os"
 
 	"github.com/mattiabonardi/spruce/models"
@@ -15,6 +16,25 @@ type YamlEntityData struct {
 
 type YamlDAO struct {
 	EntityDefinition models.EntityDefinition
+}
+
+func (h YamlDAO) GetById(executionContext models.ExecutionContext, entityContext models.EntityContext, _id string) (models.Entity, error) {
+	var entity = models.Entity{}
+	// get yaml data
+	entityData, err := h.getYamlData()
+	if err != nil {
+		return entity, err
+	}
+	// iter over elements
+	for _, e := range entityData.Data {
+		// get _id field as string
+		id := e["_id"].(string)
+		if id == _id {
+			// return entity
+			return h.buildEntityFromYamlRecord(e), nil
+		}
+	}
+	return entity, errors.New("No entity matched with _id: " + _id)
 }
 
 func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) ([]models.Entity, error) {
