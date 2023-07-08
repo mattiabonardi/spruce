@@ -20,17 +20,17 @@ type YamlDAO struct {
 
 func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) []models.Entity {
 	// get yaml data
-	entityData := getYamlData(h.EntityDefinition)
+	entityData := h.getYamlData()
 	var entities = []models.Entity{}
-	for i, e := range entityData.Data {
-		entities[i] = buildEntityFromYamlRecord(h.EntityDefinition, e)
+	for _, e := range entityData.Data {
+		entities = append(entities, h.buildEntityFromYamlRecord(e))
 	}
 	return entities
 }
 
-func getYamlData(entityDefinition models.EntityDefinition) YamlEntityData {
+func (h YamlDAO) getYamlData() YamlEntityData {
 	// open file
-	file, err := os.Open(utils.RootDir() + "/" + entityDefinition.DataSource.YamlFileConfig.FilePath)
+	file, err := os.Open(utils.RootDir() + "/" + h.EntityDefinition.DataSource.YamlFileConfig.FilePath)
 	if err != nil {
 		log.Fatalf("Unable to open file: %v", err)
 	}
@@ -48,12 +48,12 @@ func getYamlData(entityDefinition models.EntityDefinition) YamlEntityData {
 	return YamlEntityData
 }
 
-func buildEntityFromYamlRecord(entityDefinition models.EntityDefinition, yamlRecord map[string]interface{}) models.Entity {
+func (h YamlDAO) buildEntityFromYamlRecord(yamlRecord map[string]interface{}) models.Entity {
 	var entity = models.Entity{}
-	entity.Class = entityDefinition.Class
+	entity.Class = h.EntityDefinition.Class
 	var attributes = make(map[string]models.Attribute)
 	// iterate definitions
-	for k, v := range entityDefinition.Attributes {
+	for k, v := range h.EntityDefinition.Attributes {
 		// create attribute
 		attribute := models.Attribute{}
 		attribute.Type = v.Type

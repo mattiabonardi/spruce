@@ -23,5 +23,5 @@ type DataSource struct {
 }
 
 type YamlDAOConfig struct {
-	FilePath string `yaml:"type"`
+	FilePath string `yaml:"filePath"`
 }

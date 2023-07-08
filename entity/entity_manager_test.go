@@ -11,11 +11,11 @@ func TestGetAll(t *testing.T) {
 	entityManager := EntityManager{}
 	entities := entityManager.GetAll("gender", models.EntityContext{})
 
-	if entities[0].Attributes["id"].Type != "String" {
+	if entities[0].Attributes["_id"].Type != "String" {
 		t.Fatal("Expected: String got: " + entities[0].Attributes["id"].Type)
 	}
 
-	if entities[0].Attributes["id"].Value != "1" {
+	if entities[0].Attributes["_id"].Value != "1" {
 		t.Fatal("Expected: 1 got: " + fmt.Sprintf("%v", entities[0].Attributes["id"].Value))
 	}
 
@@ -23,7 +23,7 @@ func TestGetAll(t *testing.T) {
 		t.Fatal("Expected: male got: " + fmt.Sprint(entities[0].Attributes["description"].Value))
 	}
 
-	if len(entities) == 2 {
+	if len(entities) != 2 {
 		t.Fatal("Expected: 2 got: " + fmt.Sprint(entities))
 	}
 }
