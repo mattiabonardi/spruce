@@ -2,7 +2,6 @@ package daos
 
 import (
 	"bufio"
-	"log"
 	"os"
 
 	"github.com/mattiabonardi/spruce/models"
@@ -18,21 +17,25 @@ type YamlDAO struct {
 	EntityDefinition models.EntityDefinition
 }
 
-func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) []models.Entity {
-	// get yaml data
-	entityData := h.getYamlData()
+func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) ([]models.Entity, error) {
 	var entities = []models.Entity{}
+	// get yaml data
+	entityData, err := h.getYamlData()
+	if err != nil {
+		return entities, err
+	}
 	for _, e := range entityData.Data {
 		entities = append(entities, h.buildEntityFromYamlRecord(e))
 	}
-	return entities
+	return entities, nil
 }
 
-func (h YamlDAO) getYamlData() YamlEntityData {
+func (h YamlDAO) getYamlData() (YamlEntityData, error) {
+	var yamlEntityData = YamlEntityData{}
 	// open file
 	file, err := os.Open(utils.RootDir() + "/" + h.EntityDefinition.DataSource.YamlFileConfig.FilePath)
 	if err != nil {
-		log.Fatalf("Unable to open file: %v", err)
+		return yamlEntityData, err
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -40,12 +43,11 @@ func (h YamlDAO) getYamlData() YamlEntityData {
 	for scanner.Scan() {
 		yamlContent += scanner.Text() + "\n"
 	}
-	var YamlEntityData = YamlEntityData{}
-	err = yaml.Unmarshal([]byte(yamlContent), &YamlEntityData)
+	err = yaml.Unmarshal([]byte(yamlContent), &yamlEntityData)
 	if err != nil {
-		log.Fatalf("Unable to elaborate file: %v", err)
+		return yamlEntityData, err
 	}
-	return YamlEntityData
+	return yamlEntityData, nil
 }
 
 func (h YamlDAO) buildEntityFromYamlRecord(yamlRecord map[string]interface{}) models.Entity {

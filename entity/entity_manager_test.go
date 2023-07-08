@@ -9,7 +9,11 @@ import (
 
 func TestGetAll(t *testing.T) {
 	entityManager := EntityManager{}
-	entities := entityManager.GetAll("gender", models.EntityContext{})
+	entities, err := entityManager.GetAll("gender", models.EntityContext{})
+
+	if err != nil {
+		t.Fatal(err)
+	}
 
 	if entities[0].Attributes["_id"].Type != "String" {
 		t.Fatal("Expected: String got: " + entities[0].Attributes["id"].Type)

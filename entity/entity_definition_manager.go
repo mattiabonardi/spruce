@@ -2,7 +2,6 @@ package entity
 
 import (
 	"bufio"
-	"log"
 	"os"
 
 	"github.com/mattiabonardi/spruce/models"
@@ -12,12 +11,13 @@ import (
 
 type EntityDefinitionManager struct{}
 
-func (h *EntityDefinitionManager) GetDefinition(entityClass string) models.EntityDefinition {
+func (h *EntityDefinitionManager) GetDefinition(entityClass string) (models.EntityDefinition, error) {
+	entityDefinition := models.EntityDefinition{}
 	// open file
 	filePath := entityClass + ".yaml"
 	file, err := os.Open(utils.RootDir() + "/resources/entities/definitions/" + filePath)
 	if err != nil {
-		log.Fatalf("Unable to open file: %v", err)
+		return entityDefinition, err
 	}
 	defer file.Close()
 	scanner := bufio.NewScanner(file)
@@ -25,10 +25,9 @@ func (h *EntityDefinitionManager) GetDefinition(entityClass string) models.Entit
 	for scanner.Scan() {
 		yamlContent += scanner.Text() + "\n"
 	}
-	entityDefinition := models.EntityDefinition{}
 	err = yaml.Unmarshal([]byte(yamlContent), &entityDefinition)
 	if err != nil {
-		log.Fatalf("Unable to elaborate file: %v", err)
+		return entityDefinition, err
 	}
-	return entityDefinition
+	return entityDefinition, nil
 }

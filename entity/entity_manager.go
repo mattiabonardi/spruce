@@ -6,10 +6,13 @@ type EntityManager struct {
 	ExecutionContext models.ExecutionContext
 }
 
-func (h EntityManager) GetAll(entityClass string, entityContext models.EntityContext) []models.Entity {
+func (h EntityManager) GetAll(entityClass string, entityContext models.EntityContext) ([]models.Entity, error) {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
-	entityDefinition := entityDefinitionManager.GetDefinition(entityClass)
+	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
+	if err != nil {
+		return nil, err
+	}
 	// call GetAll
 	return EntityFactory{}.CreateDAO(entityDefinition).GetAll(h.ExecutionContext, entityContext)
 }
