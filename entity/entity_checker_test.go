@@ -43,4 +43,14 @@ func TestCheckAttributeType(t *testing.T) {
 	if err == nil {
 		t.Fatal("Decimal check failed")
 	}
+
+	// Boolean test
+	err = entityChecker.checkAttributeType("tstBoolean", models.Boolean, true)
+	if err != nil {
+		t.Fatal("Boolean check failed")
+	}
+	err = entityChecker.checkAttributeType("tstDecimal", models.Boolean, "aaa")
+	if err == nil {
+		t.Fatal("Boolean check failed")
+	}
 }

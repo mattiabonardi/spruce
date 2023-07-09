@@ -19,10 +19,10 @@ const (
 	Boolean      Type = "Boolean"
 	ObjectId     Type = "ObjectId"
 	Object       Type = "Object"
-	IntegerArray Type = "IntegerArray"
-	StringArray  Type = "StringArray"
-	NumberArray  Type = "NumberArray"
-	ObjectArray  Type = "ObjectArray"
+	IntegerArray Type = "Array<Integer>"
+	StringArray  Type = "Array<String>"
+	DecimalArray Type = "Array<Decimal>"
+	ObjectArray  Type = "Array<Object>"
 )
 
 type EntityContext struct {

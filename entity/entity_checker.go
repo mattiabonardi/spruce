@@ -5,6 +5,7 @@ import (
 	"reflect"
 
 	"github.com/mattiabonardi/spruce/models"
+	"github.com/mattiabonardi/spruce/utils"
 )
 
 type EntityChecker struct{}
@@ -50,6 +51,24 @@ func (h EntityChecker) checkAttributeType(attributeName string, attributeTypeDef
 				return errors.New(attributeName + " isn't a Decimal")
 			} else {
 				return nil
+			}
+		}
+	case models.Boolean:
+		{
+			if valueType.Kind() != reflect.Bool {
+				return errors.New(attributeName + " isn't a Boolean")
+			} else {
+				return nil
+			}
+		}
+	case models.ObjectId:
+		{
+			regexManager := utils.RegexManager{}
+			if valueType.Kind() == reflect.String && !regexManager.Match(attributeValue.(string), utils.EXADECIMAL_PATTERN) {
+				// change value
+				return nil
+			} else {
+				return errors.New(attributeName + " isn't an ObjectId")
 			}
 		}
 	default:
