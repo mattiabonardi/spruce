@@ -52,3 +52,32 @@ func TestGetById(t *testing.T) {
 		t.Fatal("Expected: female got: " + fmt.Sprint(entity.Attributes["description"].Value))
 	}
 }
+
+func TestCreateAndDelete(t *testing.T) {
+	entityManager := EntityManager{}
+	entity := models.Entity{}
+	entity.Class = "gender"
+	attributes := make(map[string]models.Attribute)
+	attributes["_id"] = models.Attribute{
+		Type:  models.String,
+		Value: "3",
+	}
+	attributes["description"] = models.Attribute{
+		Type:  models.String,
+		Value: "Other",
+	}
+	entity.Attributes = attributes
+	_, err := entityManager.Create("gender", models.EntityContext{}, entity)
+	if err != nil {
+		t.Fatal(err)
+	}
+	_, err = entityManager.Create("gender", models.EntityContext{}, entity)
+	if err == nil {
+		t.Fatal("write test failed, tried to write with same id")
+	}
+	// delete
+	err = entityManager.DeleteById("gender", models.EntityContext{}, "3")
+	if err != nil {
+		t.Fatal(err)
+	}
+}

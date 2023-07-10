@@ -2,12 +2,12 @@ package daos
 
 import (
 	"bufio"
-	"errors"
+	"fmt"
 	"os"
 
 	"github.com/mattiabonardi/spruce/models"
 	"github.com/mattiabonardi/spruce/utils"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 type YamlEntityData struct {
@@ -34,7 +34,7 @@ func (h YamlDAO) GetById(executionContext models.ExecutionContext, entityContext
 			return h.buildEntityFromYamlRecord(e), nil
 		}
 	}
-	return entity, errors.New("No entity matched with _id: " + _id)
+	return entity, fmt.Errorf("no entity matched with _id: %s", _id)
 }
 
 func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) ([]models.Entity, error) {
@@ -50,10 +50,62 @@ func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext 
 	return entities, nil
 }
 
+func (h YamlDAO) Create(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) (models.Entity, error) {
+	// get yaml data
+	entityData, err := h.getYamlData()
+	if err != nil {
+		return entity, err
+	}
+	// check if already exist
+	for _, e := range entityData.Data {
+		if e["_id"] == entity.Attributes["_id"].Value {
+			return entity, fmt.Errorf("entity with id: %s already exist", entity.Attributes["_id"])
+		}
+	}
+	// create new item in entityData
+	item := make(map[string]interface{})
+	for k := range h.EntityDefinition.Attributes {
+		item[k] = entity.Attributes[k].Value
+	}
+	// add to list
+	entityData.Data = append(entityData.Data, item)
+	// write file
+	err = h.saveYamlData(entityData)
+	if err != nil {
+		return entity, err
+	}
+	return entity, nil
+}
+
+func (h YamlDAO) DeleteById(executionContext models.ExecutionContext, entityContext models.EntityContext, _id string) error {
+	// get yaml data
+	entityData, err := h.getYamlData()
+	if err != nil {
+		return err
+	}
+	// delete element from yaml data
+	var index = -1
+	for i, e := range entityData.Data {
+		if e["_id"] == _id {
+			index = i
+		}
+	}
+	if index != -1 {
+		copy(entityData.Data[index:], entityData.Data[index+1:])
+		entityData.Data = entityData.Data[:len(entityData.Data)-1]
+	}
+	// write file
+	err = h.saveYamlData(entityData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h YamlDAO) getYamlData() (YamlEntityData, error) {
 	var yamlEntityData = YamlEntityData{}
 	// open file
-	file, err := os.Open(utils.RootDir() + "/" + h.EntityDefinition.DataSource.YamlFileConfig.FilePath)
+	file, err := os.Open(h.getYamlPath())
 	if err != nil {
 		return yamlEntityData, err
 	}
@@ -68,6 +120,30 @@ func (h YamlDAO) getYamlData() (YamlEntityData, error) {
 		return yamlEntityData, err
 	}
 	return yamlEntityData, nil
+}
+
+func (h YamlDAO) saveYamlData(yamlEntityData YamlEntityData) error {
+	// convert to string yaml
+	yamlContent, err := yaml.Marshal(yamlEntityData)
+	if err != nil {
+		return err
+	}
+	// open file
+	file, err := os.OpenFile(h.getYamlPath(), os.O_WRONLY|os.O_TRUNC, 0644)
+	if err != nil {
+		return err
+	}
+	defer file.Close()
+	// write file
+	_, err = file.Write(yamlContent)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (h YamlDAO) getYamlPath() string {
+	return utils.RootDir() + "/" + h.EntityDefinition.DataSource.YamlFileConfig.FilePath
 }
 
 func (h YamlDAO) buildEntityFromYamlRecord(yamlRecord map[string]interface{}) models.Entity {
