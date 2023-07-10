@@ -5,7 +5,7 @@ import (
 	"reflect"
 
 	"github.com/mattiabonardi/spruce/models"
-	"github.com/mattiabonardi/spruce/utils"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 type EntityChecker struct{}
@@ -63,9 +63,11 @@ func (h EntityChecker) checkAttributeType(attributeName string, attributeTypeDef
 		}
 	case models.ObjectId:
 		{
-			regexManager := utils.RegexManager{}
-			if valueType.Kind() == reflect.String && !regexManager.Match(attributeValue.(string), utils.EXADECIMAL_PATTERN) {
-				// change value
+			if valueType.Kind() == reflect.String {
+				_, err := primitive.ObjectIDFromHex(attributeValue.(string))
+				if err != nil {
+					return errors.New(attributeName + " isn't an ObjectId")
+				}
 				return nil
 			} else {
 				return errors.New(attributeName + " isn't an ObjectId")

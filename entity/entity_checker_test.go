@@ -53,4 +53,14 @@ func TestCheckAttributeType(t *testing.T) {
 	if err == nil {
 		t.Fatal("Boolean check failed")
 	}
+
+	// ObjectId test
+	err = entityChecker.checkAttributeType("tstObjectid", models.ObjectId, "609c6aae7e8d9a2c6d36e82d")
+	if err != nil {
+		t.Fatal("ObjectId check failed")
+	}
+	err = entityChecker.checkAttributeType("tstObjectId", models.ObjectId, "aaa")
+	if err == nil {
+		t.Fatal("ObjectId check failed")
+	}
 }
