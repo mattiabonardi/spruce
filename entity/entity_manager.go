@@ -49,3 +49,14 @@ func (h EntityManager) DeleteById(entityClass string, entityContext models.Entit
 	// call DeleteById
 	return EntityFactory{}.CreateDAO(entityDefinition).DeleteById(h.ExecutionContext, entityContext, _id)
 }
+
+func (h EntityManager) Update(entityClass string, entityContext models.EntityContext, entity models.Entity) error {
+	// get entity definition
+	entityDefinitionManager := EntityDefinitionManager{}
+	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
+	if err != nil {
+		return err
+	}
+	// call DeleteById
+	return EntityFactory{}.CreateDAO(entityDefinition).Update(h.ExecutionContext, entityContext, entity)
+}

@@ -81,3 +81,33 @@ func TestCreateAndDelete(t *testing.T) {
 		t.Fatal(err)
 	}
 }
+
+func TestUpdateAndReset(t *testing.T) {
+	entityManager := EntityManager{}
+	// update
+	entity := models.Entity{}
+	entity.Class = "gender"
+	attributes := make(map[string]models.Attribute)
+	attributes["_id"] = models.Attribute{
+		Type:  models.String,
+		Value: "2",
+	}
+	attributes["description"] = models.Attribute{
+		Type:  models.String,
+		Value: "female updated",
+	}
+	entity.Attributes = attributes
+	err := entityManager.Update("gender", models.EntityContext{}, entity)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// reset
+	entity.Attributes["description"] = models.Attribute{
+		Type:  models.String,
+		Value: "female",
+	}
+	err = entityManager.Update("gender", models.EntityContext{}, entity)
+	if err != nil {
+		t.Fatal(err)
+	}
+}

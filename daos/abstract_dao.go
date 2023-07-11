@@ -7,4 +7,5 @@ type AbstractDAO interface {
 	GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) ([]models.Entity, error)
 	Create(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) (models.Entity, error)
 	DeleteById(executionContext models.ExecutionContext, entityContext models.EntityContext, _id string) error
+	Update(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) error
 }

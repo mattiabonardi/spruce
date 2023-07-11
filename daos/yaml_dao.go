@@ -102,6 +102,37 @@ func (h YamlDAO) DeleteById(executionContext models.ExecutionContext, entityCont
 	return nil
 }
 
+func (h YamlDAO) Update(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) error {
+	// get yaml data
+	entityData, err := h.getYamlData()
+	if err != nil {
+		return err
+	}
+	// find entity with same id
+	var index = -1
+	for i, e := range entityData.Data {
+		if e["_id"] == entity.Attributes["_id"].Value {
+			index = i
+		}
+	}
+	if index == -1 {
+		return fmt.Errorf("entity with id %s not found", entity.Attributes["_id"].Value)
+	}
+	// merge old data with new data
+	e := entityData.Data[index]
+	for name, value := range entity.Attributes {
+		e[name] = value.Value
+	}
+	// set new entity
+	entityData.Data[index] = e
+	// write file
+	err = h.saveYamlData(entityData)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
 func (h YamlDAO) getYamlData() (YamlEntityData, error) {
 	var yamlEntityData = YamlEntityData{}
 	// open file
