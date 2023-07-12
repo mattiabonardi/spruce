@@ -2,8 +2,6 @@ package entity
 
 import (
 	"testing"
-
-	"github.com/mattiabonardi/spruce/models"
 )
 
 func TestGetDefinition(t *testing.T) {
@@ -14,7 +12,7 @@ func TestGetDefinition(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if entityDefinition.DataSource.Type != models.YamlFile {
-		t.Fatal("Aspected: " + models.YamlFile + " got: " + entityDefinition.DataSource.Type)
+	if entityDefinition.DataSource.Type != YamlFile {
+		t.Fatal("Aspected: " + YamlFile + " got: " + entityDefinition.DataSource.Type)
 	}
 }

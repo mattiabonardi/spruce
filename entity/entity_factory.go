@@ -2,17 +2,14 @@ package entity
 
 import (
 	"log"
-
-	"github.com/mattiabonardi/spruce/daos"
-	"github.com/mattiabonardi/spruce/models"
 )
 
 type EntityFactory struct{}
 
-func (h EntityFactory) CreateDAO(entityDefinition models.EntityDefinition) daos.AbstractDAO {
+func (h EntityFactory) CreateDAO(entityDefinition EntityDefinition) AbstractDAO {
 	switch entityDefinition.DataSource.Type {
-	case models.YamlFile:
-		return daos.YamlDAO{
+	case YamlFile:
+		return YamlDAO{
 			EntityDefinition: entityDefinition,
 		}
 	default:

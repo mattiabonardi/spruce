@@ -1,23 +1,25 @@
 package entity
 
-import "github.com/mattiabonardi/spruce/models"
+import (
+	"github.com/mattiabonardi/spruce/execution"
+)
 
 type EntityManager struct {
-	ExecutionContext models.ExecutionContext
+	ExecutionContext execution.ExecutionContext
 }
 
-func (h EntityManager) GetById(entityClass string, entityContext models.EntityContext, _id string) (models.Entity, error) {
+func (h EntityManager) GetById(entityClass string, entityContext EntityContext, _id string) (Entity, error) {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
 	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
 	if err != nil {
-		return models.Entity{}, err
+		return Entity{}, err
 	}
 	// call GetAll
 	return EntityFactory{}.CreateDAO(entityDefinition).GetById(h.ExecutionContext, entityContext, _id)
 }
 
-func (h EntityManager) GetAll(entityClass string, entityContext models.EntityContext) ([]models.Entity, error) {
+func (h EntityManager) GetAll(entityClass string, entityContext EntityContext) ([]Entity, error) {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
 	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
@@ -28,18 +30,18 @@ func (h EntityManager) GetAll(entityClass string, entityContext models.EntityCon
 	return EntityFactory{}.CreateDAO(entityDefinition).GetAll(h.ExecutionContext, entityContext)
 }
 
-func (h EntityManager) Create(entityClass string, entityContext models.EntityContext, entity models.Entity) (models.Entity, error) {
+func (h EntityManager) Create(entityClass string, entityContext EntityContext, entity Entity) (Entity, error) {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
 	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
 	if err != nil {
-		return models.Entity{}, err
+		return Entity{}, err
 	}
 	// call Create
 	return EntityFactory{}.CreateDAO(entityDefinition).Create(h.ExecutionContext, entityContext, entity)
 }
 
-func (h EntityManager) DeleteById(entityClass string, entityContext models.EntityContext, _id string) error {
+func (h EntityManager) DeleteById(entityClass string, entityContext EntityContext, _id string) error {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
 	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)
@@ -50,7 +52,7 @@ func (h EntityManager) DeleteById(entityClass string, entityContext models.Entit
 	return EntityFactory{}.CreateDAO(entityDefinition).DeleteById(h.ExecutionContext, entityContext, _id)
 }
 
-func (h EntityManager) Update(entityClass string, entityContext models.EntityContext, entity models.Entity) error {
+func (h EntityManager) Update(entityClass string, entityContext EntityContext, entity Entity) error {
 	// get entity definition
 	entityDefinitionManager := EntityDefinitionManager{}
 	entityDefinition, err := entityDefinitionManager.GetDefinition(entityClass)

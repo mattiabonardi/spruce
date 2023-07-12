@@ -2,8 +2,6 @@ package entity
 
 import (
 	"testing"
-
-	"github.com/mattiabonardi/spruce/models"
 )
 
 func TestCheckAttributeType(t *testing.T) {
@@ -15,51 +13,51 @@ func TestCheckAttributeType(t *testing.T) {
 	}
 
 	// String test
-	err = entityChecker.checkAttributeType("tstString", models.String, "aaaa")
+	err = entityChecker.checkAttributeType("tstString", String, "aaaa")
 	if err != nil {
 		t.Fatal("String check failed")
 	}
-	err = entityChecker.checkAttributeType("tstString", models.String, 1)
+	err = entityChecker.checkAttributeType("tstString", String, 1)
 	if err == nil {
 		t.Fatal("String check failed")
 	}
 
 	// Integer test
-	err = entityChecker.checkAttributeType("tstInteger", models.Integer, 1)
+	err = entityChecker.checkAttributeType("tstInteger", Integer, 1)
 	if err != nil {
 		t.Fatal("Integer check failed")
 	}
-	err = entityChecker.checkAttributeType("tstInteger", models.Integer, "aaa")
+	err = entityChecker.checkAttributeType("tstInteger", Integer, "aaa")
 	if err == nil {
 		t.Fatal("Integer check failed")
 	}
 
 	// Decimal test
-	err = entityChecker.checkAttributeType("tstDecimal", models.Decimal, 1.0)
+	err = entityChecker.checkAttributeType("tstDecimal", Decimal, 1.0)
 	if err != nil {
 		t.Fatal("Decimal check failed")
 	}
-	err = entityChecker.checkAttributeType("tstDecimal", models.Decimal, "aaa")
+	err = entityChecker.checkAttributeType("tstDecimal", Decimal, "aaa")
 	if err == nil {
 		t.Fatal("Decimal check failed")
 	}
 
 	// Boolean test
-	err = entityChecker.checkAttributeType("tstBoolean", models.Boolean, true)
+	err = entityChecker.checkAttributeType("tstBoolean", Boolean, true)
 	if err != nil {
 		t.Fatal("Boolean check failed")
 	}
-	err = entityChecker.checkAttributeType("tstDecimal", models.Boolean, "aaa")
+	err = entityChecker.checkAttributeType("tstDecimal", Boolean, "aaa")
 	if err == nil {
 		t.Fatal("Boolean check failed")
 	}
 
 	// ObjectId test
-	err = entityChecker.checkAttributeType("tstObjectid", models.ObjectId, "609c6aae7e8d9a2c6d36e82d")
+	err = entityChecker.checkAttributeType("tstObjectid", ObjectId, "609c6aae7e8d9a2c6d36e82d")
 	if err != nil {
 		t.Fatal("ObjectId check failed")
 	}
-	err = entityChecker.checkAttributeType("tstObjectId", models.ObjectId, "aaa")
+	err = entityChecker.checkAttributeType("tstObjectId", ObjectId, "aaa")
 	if err == nil {
 		t.Fatal("ObjectId check failed")
 	}

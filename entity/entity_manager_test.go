@@ -3,13 +3,11 @@ package entity
 import (
 	"fmt"
 	"testing"
-
-	"github.com/mattiabonardi/spruce/models"
 )
 
 func TestGetAll(t *testing.T) {
 	entityManager := EntityManager{}
-	entities, err := entityManager.GetAll("gender", models.EntityContext{})
+	entities, err := entityManager.GetAll("gender", EntityContext{})
 
 	if err != nil {
 		t.Fatal(err)
@@ -34,7 +32,7 @@ func TestGetAll(t *testing.T) {
 
 func TestGetById(t *testing.T) {
 	entityManager := EntityManager{}
-	entity, err := entityManager.GetById("gender", models.EntityContext{}, "2")
+	entity, err := entityManager.GetById("gender", EntityContext{}, "2")
 
 	if err != nil {
 		t.Fatal(err)
@@ -55,28 +53,28 @@ func TestGetById(t *testing.T) {
 
 func TestCreateAndDelete(t *testing.T) {
 	entityManager := EntityManager{}
-	entity := models.Entity{}
+	entity := Entity{}
 	entity.Class = "gender"
-	attributes := make(map[string]models.Attribute)
-	attributes["_id"] = models.Attribute{
-		Type:  models.String,
+	attributes := make(map[string]Attribute)
+	attributes["_id"] = Attribute{
+		Type:  String,
 		Value: "3",
 	}
-	attributes["description"] = models.Attribute{
-		Type:  models.String,
+	attributes["description"] = Attribute{
+		Type:  String,
 		Value: "Other",
 	}
 	entity.Attributes = attributes
-	_, err := entityManager.Create("gender", models.EntityContext{}, entity)
+	_, err := entityManager.Create("gender", EntityContext{}, entity)
 	if err != nil {
 		t.Fatal(err)
 	}
-	_, err = entityManager.Create("gender", models.EntityContext{}, entity)
+	_, err = entityManager.Create("gender", EntityContext{}, entity)
 	if err == nil {
 		t.Fatal("write test failed, tried to write with same id")
 	}
 	// delete
-	err = entityManager.DeleteById("gender", models.EntityContext{}, "3")
+	err = entityManager.DeleteById("gender", EntityContext{}, "3")
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -85,28 +83,28 @@ func TestCreateAndDelete(t *testing.T) {
 func TestUpdateAndReset(t *testing.T) {
 	entityManager := EntityManager{}
 	// update
-	entity := models.Entity{}
+	entity := Entity{}
 	entity.Class = "gender"
-	attributes := make(map[string]models.Attribute)
-	attributes["_id"] = models.Attribute{
-		Type:  models.String,
+	attributes := make(map[string]Attribute)
+	attributes["_id"] = Attribute{
+		Type:  String,
 		Value: "2",
 	}
-	attributes["description"] = models.Attribute{
-		Type:  models.String,
+	attributes["description"] = Attribute{
+		Type:  String,
 		Value: "female updated",
 	}
 	entity.Attributes = attributes
-	err := entityManager.Update("gender", models.EntityContext{}, entity)
+	err := entityManager.Update("gender", EntityContext{}, entity)
 	if err != nil {
 		t.Fatal(err)
 	}
 	// reset
-	entity.Attributes["description"] = models.Attribute{
-		Type:  models.String,
+	entity.Attributes["description"] = Attribute{
+		Type:  String,
 		Value: "female",
 	}
-	err = entityManager.Update("gender", models.EntityContext{}, entity)
+	err = entityManager.Update("gender", EntityContext{}, entity)
 	if err != nil {
 		t.Fatal(err)
 	}

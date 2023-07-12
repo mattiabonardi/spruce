@@ -1,11 +1,11 @@
-package daos
+package entity
 
 import (
 	"bufio"
 	"fmt"
 	"os"
 
-	"github.com/mattiabonardi/spruce/models"
+	"github.com/mattiabonardi/spruce/execution"
 	"github.com/mattiabonardi/spruce/utils"
 	"gopkg.in/yaml.v3"
 )
@@ -15,11 +15,11 @@ type YamlEntityData struct {
 }
 
 type YamlDAO struct {
-	EntityDefinition models.EntityDefinition
+	EntityDefinition EntityDefinition
 }
 
-func (h YamlDAO) GetById(executionContext models.ExecutionContext, entityContext models.EntityContext, _id string) (models.Entity, error) {
-	var entity = models.Entity{}
+func (h YamlDAO) GetById(executionContext execution.ExecutionContext, entityContext EntityContext, _id string) (Entity, error) {
+	var entity = Entity{}
 	// get yaml data
 	entityData, err := h.getYamlData()
 	if err != nil {
@@ -37,8 +37,8 @@ func (h YamlDAO) GetById(executionContext models.ExecutionContext, entityContext
 	return entity, fmt.Errorf("no entity matched with _id: %s", _id)
 }
 
-func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext models.EntityContext) ([]models.Entity, error) {
-	var entities = []models.Entity{}
+func (h YamlDAO) GetAll(executionContext execution.ExecutionContext, entityContext EntityContext) ([]Entity, error) {
+	var entities = []Entity{}
 	// get yaml data
 	entityData, err := h.getYamlData()
 	if err != nil {
@@ -50,7 +50,7 @@ func (h YamlDAO) GetAll(executionContext models.ExecutionContext, entityContext 
 	return entities, nil
 }
 
-func (h YamlDAO) Create(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) (models.Entity, error) {
+func (h YamlDAO) Create(executionContext execution.ExecutionContext, entityContext EntityContext, entity Entity) (Entity, error) {
 	// get yaml data
 	entityData, err := h.getYamlData()
 	if err != nil {
@@ -77,7 +77,7 @@ func (h YamlDAO) Create(executionContext models.ExecutionContext, entityContext 
 	return entity, nil
 }
 
-func (h YamlDAO) DeleteById(executionContext models.ExecutionContext, entityContext models.EntityContext, _id string) error {
+func (h YamlDAO) DeleteById(executionContext execution.ExecutionContext, entityContext EntityContext, _id string) error {
 	// get yaml data
 	entityData, err := h.getYamlData()
 	if err != nil {
@@ -102,7 +102,7 @@ func (h YamlDAO) DeleteById(executionContext models.ExecutionContext, entityCont
 	return nil
 }
 
-func (h YamlDAO) Update(executionContext models.ExecutionContext, entityContext models.EntityContext, entity models.Entity) error {
+func (h YamlDAO) Update(executionContext execution.ExecutionContext, entityContext EntityContext, entity Entity) error {
 	// get yaml data
 	entityData, err := h.getYamlData()
 	if err != nil {
@@ -177,14 +177,14 @@ func (h YamlDAO) getYamlPath() string {
 	return utils.RootDir() + "/" + h.EntityDefinition.DataSource.YamlFileConfig.FilePath
 }
 
-func (h YamlDAO) buildEntityFromYamlRecord(yamlRecord map[string]interface{}) models.Entity {
-	var entity = models.Entity{}
+func (h YamlDAO) buildEntityFromYamlRecord(yamlRecord map[string]interface{}) Entity {
+	var entity = Entity{}
 	entity.Class = h.EntityDefinition.Class
-	var attributes = make(map[string]models.Attribute)
+	var attributes = make(map[string]Attribute)
 	// iterate definitions
 	for k, v := range h.EntityDefinition.Attributes {
 		// create attribute
-		attribute := models.Attribute{}
+		attribute := Attribute{}
 		attribute.Type = v.Type
 		attribute.Value = yamlRecord[k]
 		attributes[k] = attribute

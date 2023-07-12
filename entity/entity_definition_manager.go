@@ -4,15 +4,14 @@ import (
 	"bufio"
 	"os"
 
-	"github.com/mattiabonardi/spruce/models"
 	"github.com/mattiabonardi/spruce/utils"
 	"gopkg.in/yaml.v2"
 )
 
 type EntityDefinitionManager struct{}
 
-func (h *EntityDefinitionManager) GetDefinition(entityClass string) (models.EntityDefinition, error) {
-	entityDefinition := models.EntityDefinition{}
+func (h *EntityDefinitionManager) GetDefinition(entityClass string) (EntityDefinition, error) {
+	entityDefinition := EntityDefinition{}
 	// open file
 	filePath := entityClass + ".yaml"
 	file, err := os.Open(utils.RootDir() + "/resources/entities/definitions/" + filePath)
