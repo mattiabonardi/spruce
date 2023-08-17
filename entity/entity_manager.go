@@ -1,11 +1,11 @@
 package entity
 
 import (
-	"github.com/mattiabonardi/spruce/execution"
+	"github.com/mattiabonardi/endor-sdk-go/models"
 )
 
 type EntityManager struct {
-	ExecutionContext execution.ExecutionContext
+	ExecutionContext models.ExecutionContext
 }
 
 func (h EntityManager) GetById(entityClass string, entityContext EntityContext, _id string) (Entity, error) {

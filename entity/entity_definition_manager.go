@@ -3,9 +3,11 @@ package entity
 import (
 	"bufio"
 	"os"
+	"path"
+	"path/filepath"
+	"runtime"
 
-	"github.com/mattiabonardi/spruce/utils"
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 type EntityDefinitionManager struct{}
@@ -14,7 +16,7 @@ func (h *EntityDefinitionManager) GetDefinition(entityClass string) (EntityDefin
 	entityDefinition := EntityDefinition{}
 	// open file
 	filePath := entityClass + ".yaml"
-	file, err := os.Open(utils.RootDir() + "/resources/entities/definitions/" + filePath)
+	file, err := os.Open(h.rootDir() + "/resources/entities/definitions/" + filePath)
 	if err != nil {
 		return entityDefinition, err
 	}
@@ -29,4 +31,10 @@ func (h *EntityDefinitionManager) GetDefinition(entityClass string) (EntityDefin
 		return entityDefinition, err
 	}
 	return entityDefinition, nil
+}
+
+func (h *EntityDefinitionManager) rootDir() string {
+	_, b, _, _ := runtime.Caller(0)
+	d := path.Join(path.Dir(b))
+	return filepath.Dir(d)
 }
